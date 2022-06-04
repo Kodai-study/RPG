@@ -7,71 +7,79 @@ public class TatolEnemy : Enemy
 {
     // Start is called before the first frame update
 
-    NavMeshAgent navigation;
-    public Transform chacePlayer;
-    public float a;
-    public float z;
-    public float groundCheckLength;
-    private float msCount = 0;
-    private bool isNockBack = false;
+    NavMeshAgent navigation;        //敵の移動(プレイヤーに向かう)を司るAI
+    public Transform chacePlayer;   //追いかけるプレイヤーの位置情報(デバッグ用にプレイヤーをインスペクタで入力)
+    public float nockBackLength;    //ノックバックで与える加速度の係数(カメラの向いている方向に与えられる)
+    public float nockBack_Y;        //ノックバックで与えられる加速度の、Y軸(高さ軸)の係数
+    public float groundCheckLength; //中心からどれくらい下に地面があればIsGroundになるかの値
+    private float secCount = 0;     //ノックバック状態からの復帰で使う、時間経過のカウンター
+    private bool isNockBack = false; //ノックバック状態化を判定
+    public float nockBackDelay;     //ノックバックが始まってから、地面判定がストップする時間
 
     void Start()
     {
         HP = MAX_HP;
         navigation = GetComponent<NavMeshAgent>();
-        Debug.Log(HP);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(navigation != null && navigation.isActiveAndEnabled)
+        /* ナビゲーションが有効なら、自分が向かう場所をプレイヤーの場所にする */
+        if (navigation != null && navigation.isActiveAndEnabled)
             navigation.destination = chacePlayer.position;
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
+        /* (デバッグ用)Aボタンでノックバック */
+        if (Input.GetKeyDown(KeyCode.K))
             NockBack(chacePlayer);
-        }
 
-        if (isNockBack && IsGround())
+        /* ノックバック状態で、地面に再び着いた時の処理 */
+        if (isNockBack)
         {
-            isNockBack = false;
-            navigation.enabled = true;
-            msCount = 0;
+            if (secCount >= nockBackDelay && IsGround())
+            {
+                isNockBack = false;         //ノックバック状態の解除
+                navigation.enabled = true;  //ナビゲーションを再開
+                secCount = 0;
+            }
+            else
+                secCount += Time.deltaTime; //ノックバックが始まってからの時間をカウント(一定時間で地面判定の復活)
         }
-
     }
 
+
+    /* ダメージを受けたときの処理 */
     public override void Dameged(float damage)
     {
         base.Dameged(damage);
-        NockBack(oldCharaAnimator.gameObject.transform);
+        NockBack(oldCharaAnimator.gameObject.transform); //とりあえずでダメージ等によらず同じノックバック処理
     }
 
+
+    /* ダメージを受けたときのノックバック処理 */
     private void NockBack(Transform attackedPlayer)
     {
+        Camera camera;                          //プレイヤーが持っているカメラ
+        Vector3 NockBackDirection;              //ノックバックで与えられる加速度
+        camera = attackedPlayer.GetComponentInChildren<Camera>();   //攻撃してきたプレイヤーのカメラを取得
+        /** TODO 攻撃してきたオブジェクトがプレイヤーかどうかを判定 */
+        Ray ray = camera.ViewportPointToRay(new Vector3(1f, 0f, 1f));   //攻撃プレイヤーのカメラの向いている方向を取得
+        Debug.DrawRay(ray.origin,ray.direction);                    ///Debug  
 
-        Camera camera = attackedPlayer.GetComponentInChildren<Camera>();
-        //Ray ray = camera.ViewportPointToRay(new Vector2(.5f, .5f));
-        Ray ray = camera.ViewportPointToRay(new Vector3(.5f,0f,0.5f));
-        Debug.DrawRay(ray.origin,ray.direction);
+        NockBackDirection = ray.direction;                          //カメラが向いている方向を3軸で取得
+        NockBackDirection.y = nockBack_Y;                           //ノックバックする高さを、クラス変数に設定
+        NockBackDirection *= nockBackLength;                        //ノックバックで与える
+        GetComponent<Rigidbody>().AddForce(NockBackDirection,ForceMode.VelocityChange); //計算した加速度を与えてノックバック
 
-        Vector3 NockBackDirection = ray.direction;
-        NockBackDirection.y = z;
-        NockBackDirection *= a;
-        GetComponent<Rigidbody>().AddForce(NockBackDirection,ForceMode.VelocityChange);
-
-        isNockBack = true;
-        navigation.enabled = false;
+        isNockBack = true;                              //ノックバック状態
+        navigation.enabled = false;                     //ノックバック状態ではナビゲーションオフ(上方向にいけないため)
 
         Debug.Log(NockBackDirection);
     }
 
     private bool IsGround()
     {
-        msCount += Time.deltaTime;
-        if (msCount < 0.1)
-            return false;
+        /* 自分の中心から下方向を見て、変数値より近い部分に地面があったら地面に触れていたと判定 */
         return Physics.Raycast(transform.position, Vector3.down, groundCheckLength, groundLayer);
     }
 

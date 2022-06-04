@@ -1507,9 +1507,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   chacePlayer: {fileID: 4807772127334638}
-  a: 3
-  z: 2
+  nockBackLength: 0
+  nockBack_Y: 0
   groundCheckLength: 0
+  nockBackDelay: 0
 --- !u!54 &1155046230
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8952,9 +8953,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2
   chacePlayer: {fileID: 4807772127334638}
-  a: 3
-  z: 1
-  groundCheckLength: 0.29
+  nockBackLength: 1.38
+  nockBack_Y: 1.94
+  groundCheckLength: 0.53
+  nockBackDelay: 0.24
 --- !u!195 &9220681825187790564
 NavMeshAgent:
   m_ObjectHideFlags: 0
