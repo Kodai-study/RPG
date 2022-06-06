@@ -15,16 +15,19 @@ public class TatolEnemy : Enemy
     private float secCount = 0;     //ノックバック状態からの復帰で使う、時間経過のカウンター
     private bool isNockBack = false; //ノックバック状態化を判定
     public float nockBackDelay;     //ノックバックが始まってから、地面判定がストップする時間
+    private float size;
 
     void Start()
     {
         HP = MAX_HP;
         navigation = GetComponent<NavMeshAgent>();
+        size = transform.localScale.x;
     }
 
     // Update is called once per frame
-    void Update()
+    override protected void Update()
     {
+        base.Update();
         /* ナビゲーションが有効なら、自分が向かう場所をプレイヤーの場所にする */
         if (navigation != null && navigation.isActiveAndEnabled)
             navigation.destination = chacePlayer.position;
@@ -68,20 +71,22 @@ public class TatolEnemy : Enemy
 
         NockBackDirection = ray.direction;                          //カメラが向いている方向を3軸で取得
         NockBackDirection.y = nockBack_Y;                           //ノックバックする高さを、クラス変数に設定
-        NockBackDirection *= nockBackLength;                        //ノックバックで与える
+        NockBackDirection *= (nockBackLength * size);                        //ノックバックで与える
         GetComponent<Rigidbody>().AddForce(NockBackDirection,ForceMode.VelocityChange); //計算した加速度を与えてノックバック
 
         isNockBack = true;                              //ノックバック状態
         navigation.enabled = false;                     //ノックバック状態ではナビゲーションオフ(上方向にいけないため)
-
-        Debug.Log(NockBackDirection);
     }
 
     private bool IsGround()
     {
         /* 自分の中心から下方向を見て、変数値より近い部分に地面があったら地面に触れていたと判定 */
-        return Physics.Raycast(transform.position, Vector3.down, groundCheckLength, groundLayer);
+        return Physics.Raycast(transform.position, Vector3.down, groundCheckLength * size, groundLayer);
     }
 
+    protected override void Die()
+    {
+        base.Die();
+    }
 
 }

@@ -20,9 +20,9 @@ public class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        
+        hitCount += Time.deltaTime;
     }
 
     public virtual int HP
@@ -30,6 +30,8 @@ public class Enemy : MonoBehaviour
         set
         {
             hp = value;
+            if (HP < 0)
+                Die();
         }
         get { return hp; }
     }
@@ -39,12 +41,12 @@ public class Enemy : MonoBehaviour
         HP -= (int)damage;
     }
 
-    protected void OnTriggerEnter(Collider other)
+    virtual protected void OnTriggerEnter(Collider other)
      {
-         Animator attackedAnimation = other.GetComponentInParent<Animator>();
+        Animator attackedAnimation = other.GetComponentInParent<Animator>();
          if (attackedAnimation == null)
          {
-             //Debug.Log("攻撃者のアニメーションを取得できませんでした");
+             Debug.Log("攻撃者のアニメーションを取得できませんでした");
          }
 
          if (other.tag == ATTACK_TAG_NAME || other.TryGetComponent<Animator>(out attackedAnimation))
@@ -55,24 +57,25 @@ public class Enemy : MonoBehaviour
                  var attackedCharacotr = other.GetComponentInParent<PlayerController>();
                  string st = attackedCharacotr.name;
                  float damage = attackedCharacotr.GetDamage(nowAnimation);
-                 if (damage > 0)
-                 {
+                if (damage > 0)
+                {
                     Dameged(damage);
 
-                     st += "からの攻撃" + nowAnimation.name + " ダメージ " + damage;
-                 }
+                    st += "からの攻撃" + nowAnimation.name + " ダメージ " + damage;
+                    Debug.Log(st);
+                }
+                else
+                    Debug.Log("nodamage");
                  hitCount = 0;
-
-
-
-                 if (HP <= 0)
-                 {
-                     gameObject.SetActive(false);
-                 }
              }
              oldHitAnimation = nowAnimation;
              oldCharaAnimator = attackedAnimation;
          }
      }
+
+    virtual protected void Die()
+    {
+
+    }
 
 }

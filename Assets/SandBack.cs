@@ -19,16 +19,14 @@ public class SandBack : Enemy
         
         if(HPViewr != null)
         {
-            Debug.Log("");
+            Debug.Log(HPViewr.name);
         }
-
-       // charaAnimator = 
     }
 
     // Update is called once per frame
-    void Update()
+    override protected void Update()
     {
-        hitCount += Time.deltaTime;
+        base.Update();
     }
 
 
@@ -39,7 +37,26 @@ public class SandBack : Enemy
             base.HP = value;
             HPViewr.text = value.ToString();
         }
-        get { return hp; }
+        get { return base.hp; }
+    }
+
+
+    ///Debug 
+
+    /*override protected void OnTriggerEnter(Collider other) {
+        base.OnTriggerEnter(other);
+        Debug.Log(HP);
+    }
+
+    public override void Dameged(float damage)
+    {
+        base.Dameged(damage);
+    }*/
+
+    protected override void Die()
+    {
+        base.Die();
+        gameObject.SetActive(false);
     }
 
 }
