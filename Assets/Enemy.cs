@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour
 
     virtual protected void OnTriggerEnter(Collider other)
      {
-        Animator attackedAnimation = other.GetComponentInParent<Animator>();
+         Animator attackedAnimation = other.GetComponentInParent<Animator>();//a
          if (attackedAnimation == null)
          {
              Debug.Log("攻撃者のアニメーションを取得できませんでした");
