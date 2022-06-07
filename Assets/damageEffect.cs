@@ -10,7 +10,7 @@ public class DamageEffect : MonoBehaviour
     public Color endColor;
     private TextMesh mycolor;
     public Animator animator;
-    public AnimationClip damageEffect;
+    public AnimationClip attackAnimation;
     private float effectTime;
     private float totalDamage;
 
@@ -22,7 +22,7 @@ public class DamageEffect : MonoBehaviour
     void Start()
     {
         mycolor = GetComponentInChildren<TextMesh>();
-        effectTime = damageEffect.length;
+        effectTime = attackAnimation.length;
     }
 
     void Update()
