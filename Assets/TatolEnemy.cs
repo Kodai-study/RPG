@@ -11,7 +11,7 @@ public class TatolEnemy : Enemy
     public Transform chacePlayer;   //追いかけるプレイヤーの位置情報(デバッグ用にプレイヤーをインスペクタで入力)
     public float nockBackLength;    //ノックバックで与える加速度の係数(カメラの向いている方向に与えられる)
     public float nockBack_Y;        //ノックバックで与えられる加速度の、Y軸(高さ軸)の係数
-    public float groundCheckLength; //中心からどれくらい下に地面があればIsGroundになるかの値
+    public float groundCheckLength; //中心からどれくらい下に地面があれば地面にいる判定になるかの値
     private float secCount = 0;     //ノックバック状態からの復帰で使う、時間経過のカウンター
     private bool isNockBack = false; //ノックバック状態化を判定
     public float nockBackDelay;     //ノックバックが始まってから、地面判定がストップする時間
@@ -86,7 +86,8 @@ public class TatolEnemy : Enemy
 
     protected override void Die()
     {
-        base.Die();
+        
+
     }
 
 }

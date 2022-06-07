@@ -5,15 +5,13 @@ using UnityEngine;
 public class SandBack : Enemy
 {
     public string damegedTagName;
-
-
-
     private TextMesh HPViewr;
+    public DamageEffect damageEffect;
+    private float timeCount = 0;
+    private bool IsHitting = false;
 
-    // Start is called before the first frame update
     void Start()
     {
-      
         HPViewr = GetComponentInChildren<TextMesh>();  
         HP = MAX_HP;
         
@@ -23,10 +21,21 @@ public class SandBack : Enemy
         }
     }
 
-    // Update is called once per frame
     override protected void Update()
     {
         base.Update();
+        if(damageEffect != null)
+        {
+            damageEffect.gameObject.SetActive(true);
+        }
+        timeCount += Time.deltaTime;
+        if (IsHitting) { 
+            if (timeCount > damageEffect.EffectLength)
+            {
+                damageEffect.damage(0, false);
+                IsHitting = false;
+            }
+        }
     }
 
 
@@ -40,23 +49,16 @@ public class SandBack : Enemy
         get { return base.hp; }
     }
 
-
-    ///Debug 
-
-    /*override protected void OnTriggerEnter(Collider other) {
-        base.OnTriggerEnter(other);
-        Debug.Log(HP);
-    }
-
     public override void Dameged(float damage)
     {
         base.Dameged(damage);
-    }*/
+        damageEffect.damage(damage,IsHitting);
+        IsHitting = true;
+        timeCount = 0;
+    }
 
     protected override void Die()
     {
-        base.Die();
         gameObject.SetActive(false);
     }
-
 }

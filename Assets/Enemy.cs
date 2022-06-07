@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
     [SerializeField]public int MAX_HP;
     protected int hp;
@@ -42,21 +42,21 @@ public class Enemy : MonoBehaviour
     }
 
     virtual protected void OnTriggerEnter(Collider other)
-     {
-         Animator attackedAnimation = other.GetComponentInParent<Animator>();//a
-         if (attackedAnimation == null)
-         {
-             Debug.Log("攻撃者のアニメーションを取得できませんでした");
-         }
+    {
+        Animator attackedAnimation = other.GetComponentInParent<Animator>();//a
+        if (attackedAnimation == null)
+        {
+            Debug.Log("攻撃者のアニメーションを取得できませんでした");
+        }
 
-         if (other.tag == ATTACK_TAG_NAME || other.TryGetComponent<Animator>(out attackedAnimation))
-         {
-             var nowAnimation = attackedAnimation.GetCurrentAnimatorClipInfo(0)[0].clip;
-             if (oldHitAnimation == null || oldHitAnimation != nowAnimation || hitCount > nowAnimation.length || attackedAnimation != oldCharaAnimator)
-             {
-                 var attackedCharacotr = other.GetComponentInParent<PlayerController>();
-                 string st = attackedCharacotr.name;
-                 float damage = attackedCharacotr.GetDamage(nowAnimation);
+        if (other.tag == ATTACK_TAG_NAME || other.TryGetComponent<Animator>(out attackedAnimation))
+        {
+            var nowAnimation = attackedAnimation.GetCurrentAnimatorClipInfo(0)[0].clip;
+            if (oldHitAnimation == null || oldHitAnimation != nowAnimation || hitCount > nowAnimation.length || attackedAnimation != oldCharaAnimator)
+            {
+                var attackedCharacotr = other.GetComponentInParent<PlayerController>();
+                string st = attackedCharacotr.name;
+                float damage = attackedCharacotr.GetDamage(nowAnimation);
                 if (damage > 0)
                 {
                     Dameged(damage);
@@ -65,17 +65,16 @@ public class Enemy : MonoBehaviour
                     Debug.Log(st);
                 }
                 else
-                    Debug.Log("nodamage");
-                 hitCount = 0;
-             }
-             oldHitAnimation = nowAnimation;
-             oldCharaAnimator = attackedAnimation;
-         }
-     }
-
-    virtual protected void Die()
-    {
-
+                {
+                    Debug.Log("nocode");
+                }
+                hitCount = 0;
+            }
+            oldHitAnimation = nowAnimation;
+            oldCharaAnimator = attackedAnimation;
+        }
     }
+
+    abstract protected void Die();
 
 }
