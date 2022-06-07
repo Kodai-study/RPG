@@ -1039,15 +1039,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 769154117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03afb781250fc36498fde050bcb74acf, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d17f1df2b4782b40aeeef0f8712299e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorChangeCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0083351135
-      value: 0.09423828
+      time: 0
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1265,7 +1265,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 2
-  damegedTagName: Attack_collider
+  damegedTagName: Attack_Object
   damageEffect: {fileID: 769154118}
 --- !u!1 &827965174
 GameObject:

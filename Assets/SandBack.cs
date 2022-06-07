@@ -6,7 +6,7 @@ public class SandBack : Enemy
 {
     public string damegedTagName;
     private TextMesh HPViewr;
-    public DamageEffect damageEffect;
+    public EffectDamage damageEffect;
     private float timeCount = 0;
     private bool IsHitting = false;
 

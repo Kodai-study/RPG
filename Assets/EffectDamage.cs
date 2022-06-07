@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageEffect : MonoBehaviour
+public class EffectDamage : MonoBehaviour
 {
 
     public AnimationCurve colorChangeCurve;  //エフェクト時に、色がどんなふうに
