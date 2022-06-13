@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ConstValue;
+//import (パッケージ名).(作ったクラス名)
 
 public class EffectDamage : MonoBehaviour
 {
 
-    public AnimationCurve colorChangeCurve;  //エフェクト時に、色がどんなふうに
-    public Color startColor;
-    public Color endColor;
-    private TextMesh mycolor;
+    public AnimationCurve colorChangeCurve; //エフェクト時に、色がどんなふうに遷移していくかを表したカーブ(0～1)
+    public Color startColor;                //ダメージエフェクト開始時の、透明になっている色
+    public Color endColor;                  //ダメージエフェクト終わりの、透明度が0の色
+    private TextMesh damageView;            //子オブジェクト、ダメージ数値を表示する3Dテキスト
     public Animator animator;
     public AnimationClip attackAnimation;
     private float effectTime;
@@ -17,11 +19,9 @@ public class EffectDamage : MonoBehaviour
     [Range(0f, 1f)]
     public float t;
 
-    bool isEffeect = false; //現在ダメージ時のエフェクトを実行しているか
-
     void Start()
     {
-        mycolor = GetComponentInChildren<TextMesh>();
+        damageView = GetComponentInChildren<TextMesh>();
         effectTime = attackAnimation.length;
     }
 
@@ -29,10 +29,9 @@ public class EffectDamage : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-           // animator.SetBool("damage", isEffeect = !isEffeect);
-            animator.SetTrigger("getDamage");
+            animator.SetTrigger(AnimationParams.GET_DAMAGE_TRIGGER_NAME);
         }
-        mycolor.color = Color.Lerp(startColor, endColor, colorChangeCurve.Evaluate(t));
+        damageView.color = Color.Lerp(startColor, endColor, colorChangeCurve.Evaluate(t));
     }
 
     public void damage(float damageValue, bool keepHit)
@@ -45,10 +44,12 @@ public class EffectDamage : MonoBehaviour
         {
             totalDamage += damageValue;
         }
-        mycolor.text = ((int)totalDamage).ToString();
+        damageView.text = ((int)totalDamage).ToString();
         if (damageValue > 0)
-            animator.SetTrigger("getDamage");
-        animator.SetBool("damage", keepHit);
+        {
+            animator.SetTrigger(AnimationParams.GET_DAMAGE_TRIGGER_NAME);
+        }
+        animator.SetBool(AnimationParams.DAMAGE_FLAG_NAME, keepHit);
         Debug.Log(keepHit);
     }
 

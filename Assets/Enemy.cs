@@ -19,6 +19,7 @@ public abstract class Enemy : MonoBehaviour
         hp = MAX_HP;
     }
 
+
     // Update is called once per frame
     protected virtual void Update()
     {
@@ -76,5 +77,6 @@ public abstract class Enemy : MonoBehaviour
     }
 
     abstract protected void Die();
+
 
 }

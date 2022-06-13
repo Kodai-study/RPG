@@ -5,8 +5,6 @@ using UnityEngine.AI;
 
 public class TatolEnemy : Enemy
 {
-    // Start is called before the first frame update
-
     NavMeshAgent navigation;        //敵の移動(プレイヤーに向かう)を司るAI
     public Transform chacePlayer;   //追いかけるプレイヤーの位置情報(デバッグ用にプレイヤーをインスペクタで入力)
     public float nockBackLength;    //ノックバックで与える加速度の係数(カメラの向いている方向に与えられる)
