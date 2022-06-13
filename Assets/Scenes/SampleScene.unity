@@ -1069,7 +1069,8 @@ MonoBehaviour:
   startColor: {r: 1, g: 0, b: 0, a: 0}
   endColor: {r: 1, g: 0, b: 0, a: 1}
   animator: {fileID: 769154120}
-  attackAnimation: {fileID: 7400000, guid: 5856d4b1617d60a4bba976d49a3e4465, type: 2}
+  startAnimation: {fileID: 7400000, guid: 5856d4b1617d60a4bba976d49a3e4465, type: 2}
+  endAnimation: {fileID: 7400000, guid: 82f630aee5aad1444a57a6ddda3d8056, type: 2}
   t: 0
 --- !u!95 &769154120
 Animator:

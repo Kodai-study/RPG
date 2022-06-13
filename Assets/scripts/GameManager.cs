@@ -8,11 +8,5 @@ public class GameManager : MonoBehaviour
 {
     private void Start()
     {
-        //�l�b�g���[�N�ڑ�����Ă��Ȃ��ꍇ
-        //if (!PhotonNetwork.IsConnected)
-        //{
-            //�^�C�g���ɖ߂�
-        //    SceneManager.LoadScene(0);
-        //}
     }
 }
