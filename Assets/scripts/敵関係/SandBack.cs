@@ -20,12 +20,12 @@ public class SandBack : Enemy
 
     override protected void Update()
     {
-        base.Update();              
+        base.Update();
     }
 
     public override int HP
-    {   
-         /* HPを変化させると、3Dテキストの表示が切り替わる */
+    {
+        /* HPを変化させると、3Dテキストの表示が切り替わる */
         set
         {
             base.HP = value;
